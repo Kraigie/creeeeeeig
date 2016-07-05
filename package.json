@@ -1,0 +1,22 @@
+{
+  "name": "craigbotv2",
+  "version": "1.0.0",
+  "description": "Discord bot built using [eris](https://github.com/abalabahaha/eris)",
+  "main": "bot.js",
+  "scripts": {
+    "test": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kraigie/CraigBotV2.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kraigie/CraigBotV2/issues"
+  },
+  "homepage": "https://github.com/Kraigie/CraigBotV2#readme",
+  "dependencies": {
+    "eris": "github:abalabahaha/eris#dev"
+  }
+}
