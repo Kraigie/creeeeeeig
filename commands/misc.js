@@ -13,6 +13,19 @@ bot.registerCommand('ping', (msg, args) => {
     fullDescription: 'The bot will reply with the amount of time taken'
 });
 
+bot.registerCommand('roll', (msg, args) => {
+    if(args.length == 0) return Math.floor(Math.random() * 100) + 1;
+
+    let roll = parseInt(args[0]);
+    if(!roll) return 'Please supply a number';
+
+    return Math.floor(Math.random() * roll) + 1;
+}, {
+    description: 'Roll a 100sided die',
+    fullDescription: 'Have the bot roll a number between 0 and 100, or a different specified max',
+    usage: '<max number for roll>'
+});
+
 bot.registerCommand('remindme', (msg, args) => {
     if(args.length == 0) return 'Please supply a time and reason';
 
