@@ -3,13 +3,13 @@
 module.exports.strToMs = function(time) {
     let num = 0;
     try {
-        num = time.match(/(\d+[mhs])/gi);
+        num = time.match(/(\d+ ?[mhs])/gi);
     } catch (err) {
         console.log(`Error with regex in strToMs function: ${err}`);
         return;
     }
 
-    if(num.length < 1 || num.length > 3) return;
+    if(!num || num.length < 1 || num.length > 3) return;
     num = num.splice(0, 3);
 
     let hours = 0,
@@ -27,15 +27,18 @@ module.exports.strToMs = function(time) {
 
     let retStr = '';
     if(hours)
-        retStr += `${parseInt(hours)} hours `;
+        retStr += `${parseInt(hours)} hour(s) `;
     if(minutes)
-        retStr += `${parseInt(minutes)} minutes `;
+        retStr += `${parseInt(minutes)} minute(s) `;
     if(seconds)
-        retStr += `${parseInt(seconds)} seconds `;
+        retStr += `${parseInt(seconds)} second(s) `;
+
+    let indexLstMatch = time.lastIndexOf(num[num.length - 1]) + num[num.length - 1].length - 1;
+    let lstSpcAftMtch = time.indexOf(' ', indexLstMatch);   //these variable names tho
 
     return {
         ms: (parseInt(hours) * 3600000) + (parseInt(minutes) * 60000) + (parseInt(seconds) * 1000),
         str: retStr,
-        content: time.substring(time.lastIndexOf(num[num.length - 1]) + num[num.length - 1].length)
+        content: time.substring(lstSpcAftMtch)
     }
 }
