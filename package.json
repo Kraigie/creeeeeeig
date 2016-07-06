@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Kraigie/CraigBotV2#readme",
   "dependencies": {
-    "eris": "github:abalabahaha/eris#dev"
+    "eris": "github:abalabahaha/eris#dev",
+    "request": "^2.72.0"
   }
 }
