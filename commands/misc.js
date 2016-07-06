@@ -1,5 +1,6 @@
 const auth = require('../auth');
 const request = require('request');
+const Array = require('fixed-2d-array');
 
 bot.registerCommand('ping', (msg, args) => {
     bot.createMessage(msg.channel.id, 'pong').
@@ -11,17 +12,72 @@ bot.registerCommand('ping', (msg, args) => {
     fullDescription: 'The bot will reply with the amount of time taken'
 });
 
+bot.registerCommand('word', (msg, args) => {
+    let strParts = msg.author.username.split('').map(s => s.toLowerCase());
+    let newPart = strParts.slice().reverse();
+    let ezCalcArr = strParts.concat(newPart);
+
+    let len = ezCalcArr.length;
+    let arr = new Array(len, len, ' ');
+
+    for(let x = 0; x < len; x++) {
+        for(let y = 0; y < len; y++) {
+            if(ezCalcArr[x] === ezCalcArr[y]) {
+                arr.set(x, y, ' ');
+            }
+            if(ezCalcArr[x] > ezCalcArr[y]) {
+                arr.set(x, y, '―');
+            }
+            if(ezCalcArr[x] < ezCalcArr[y]) {
+                arr.set(x, y, '|');
+            }
+        }
+    }
+
+    let ret = '```\n';
+    for(let x = 0; x < len; x++) {
+        for(let y = 0; y < len; y++) {
+            ret += arr.get(y, x);
+
+            if(y === arr.getWidth() - 1) ret += '\n';
+        }
+    }
+    ret += '```';
+    
+    return ret;
+}, {
+    description: 'Get your wordenticon',
+    fullDescription: 'The bot will reply with a wordenticon based off of your name (https://en.wikipedia.org/wiki/Identicon)'
+});
+
+bot.registerCommand('love', (msg, args) => {
+    let members = msg.channel.guild.members;
+
+    members = members.filter(m =>
+         m.status === 'online' || m.status === 'idle'
+    );
+
+    let removed = members.splice([Math.floor(Math.random()*members.length)], 1);
+    let lover = removed[0];
+    let otherLover = members[Math.floor(Math.random()*members.length)];
+
+    return `:heartpulse: ${lover.nick ? lover.nick : lover.user.username} loves ${otherLover.nick ? otherLover.nick : otherLover.user.username} :heartpulse:`;
+}, {
+    description: 'Ship em`',
+    fullDescription: 'The bot will pair up two lovebirds'
+});
+
 bot.registerCommand('avi', (msg, args) => {
     if(args.length == 0 || msg.mentions.length == 0) return 'Please specify a user by mentioning them';
 
-    let users = msg.channel.guild.members;
+    let members = msg.channel.guild.members;
     let count = 0;
     let retStr = `Requested by: **${msg.author.username}**\n`;
 
     msg.mentions.forEach(userid => {
-        let member = users.find(m => {
-            return (m.id === userid && m.user.avatar);
-        });
+        let member = members.find(m =>
+            m.id === userid && m.user.avatar
+        );
 
         if(member) {
             retStr += `https://discordapp.com/api/users/${member.id}/avatars/${member.user.avatar}.jpg\n`
@@ -57,7 +113,7 @@ bot.registerCommand('weather', (msg, args) => {
         }
 
         if (body.cod !== 200 || !body.main)
-            return `${msg.author.mention}, your location could not be found`
+        return `${msg.author.mention}, your location could not be found`
 
         let temp = body.main.temp;
         temp = (temp - 273.15) * 1.8000 + 32.00;
