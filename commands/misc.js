@@ -1,4 +1,5 @@
 const auth = require('../auth');
+const util = require('./meta/util');
 const request = require('request');
 const Array = require('fixed-2d-array');
 
@@ -10,6 +11,31 @@ bot.registerCommand('ping', (msg, args) => {
 }, {
     description: 'Ping me to make sure I\'m alive',
     fullDescription: 'The bot will reply with the amount of time taken'
+});
+
+bot.registerCommand('remindme', (msg, args) => {
+    if(args.length == 0) return 'Please supply a time and reason';
+
+    let time = util.strToMs(args.join(' '));
+    if(!time) {
+        return `${msg.author.mention} you didn\'t give me a valid time`;
+    }
+
+    if(!time.content) {
+        setTimeout(() =>
+            bot.createMessage(msg.channel.id, `${msg.author.mention}, you wanted me to remind you`)
+        , time.ms);
+        return `${msg.author.mention}, I will remind you in ${time.str}`;
+    }
+
+    setTimeout(() =>
+        bot.createMessage(msg.channel.id,`${msg.author.mention}, you wanted me to remind you: ${time.content}`)
+    , time.ms);
+    return `${msg.author.mention}, I will remind you in ${time.str}`;
+}, {
+    description: 'Have me remind you of something',
+    fullDescription: 'The bot will remind you about something - only works if you have mention notifications on!',
+    usage: '<time string> <reason>'
 });
 
 bot.registerCommand('word', (msg, args) => {
@@ -43,7 +69,7 @@ bot.registerCommand('word', (msg, args) => {
         }
     }
     ret += '```';
-    
+
     return ret;
 }, {
     description: 'Get your wordenticon',
@@ -54,7 +80,7 @@ bot.registerCommand('love', (msg, args) => {
     let members = msg.channel.guild.members;
 
     members = members.filter(m =>
-         m.status === 'online' || m.status === 'idle'
+        m.status === 'online' || m.status === 'idle'
     );
 
     let removed = members.splice([Math.floor(Math.random()*members.length)], 1);
