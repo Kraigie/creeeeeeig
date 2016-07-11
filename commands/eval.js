@@ -7,7 +7,7 @@ bot.registerCommand('eval', (msg, args) => {
 
     try {
         let evald = eval(args.join(' '));
-        if(evald.length > 1000)
+        if(evald && evald.length > 1000)
             evald = evald.substring(0, 1000);
         let after = now();
         let retStr = `\`\`\`javascript\n` +
