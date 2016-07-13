@@ -3,7 +3,7 @@ const auth = require('./auth');
 
 bot = new Eris.CommandClient(auth.token, {}, {
     description: 'Friendly Neighborhood Discord Bot - built using Eris',
-    prefix: '/',
+    prefix: ['/', '.'],
     ignoreBots: false,
     owner: 'Kraigie'
 });
