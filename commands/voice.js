@@ -37,10 +37,11 @@ bot.registerCommand('play', (msg, args) => {
     if(!type) return 'You didn\'t supply a valid song';
 
     let link = util.getLink(args.join(' '), type === 'query').then(link => {
+        let song = {};
         if(type === 'sc') {
-            let song = new ScSong(link, msg.member.nick || msg.member.user.username, 'sc');
+            song = new ScSong(link, msg.member.nick || msg.member.user.username, 'sc');
         } else {
-            let song = new YtSong(link, msg.member.nick || msg.member.user.username, 'yt');
+            song = new YtSong(link, msg.member.nick || msg.member.user.username, 'yt');
         }
 
         song.getInfo().then(song => {
@@ -52,7 +53,7 @@ bot.registerCommand('play', (msg, args) => {
         });
     })
     .catch(err => {
-        console.log(`Error querying youtube for song: ${err}`);
+        console.log(`Error querying youtube for song: ${err.stack}`);
         bot.createMessage(msg.channel.id, `I wasn't able to find any information on your song`);
     });
 
