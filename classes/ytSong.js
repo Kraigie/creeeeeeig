@@ -9,18 +9,20 @@ module.exports = class YtSong extends Song {
     }
 
     getInfo() {
-        ytdl.getInfo(this.link, (err, info) => {
-            if(err) {
-                console.log(`Error getting yt song info: ${err}`)
-                throw err;
-            }
+        return new Promise((resolve, reject) => {
+            ytdl.getInfo(this.link, (err, info) => {
+                if(err) {
+                    console.log(`Error getting yt song info: ${err}`)
+                    throw err;
+                }
 
-            if(!info) {
-                throw new Error('Couldn\'t find a song with the search');
-            }
+                if(!info) {
+                    throw new Error('Couldn\'t find a song with the search');
+                }
 
-            this.title = info.title;
-            return Promise.resolve(this);
+                this.title = info.title;
+                return resolve(this);
+            })
         });
     }
 
