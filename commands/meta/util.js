@@ -6,44 +6,46 @@ const auth = require('../../auth');
 module.exports.getLink = function(link, query) {
     if(!query) return Promise.resolve(link);
 
-    request({
-        uri: 'https://www.googleapis.com/youtube/v3/search',
-        qs: {
-            q: link,
-            part: 'snippet',
-            key: auth.yt_key,
-            maxResults: '1',
-            type: 'video'
+    return new Promise((resolve, reject) => {
+        request({
+            uri: 'https://www.googleapis.com/youtube/v3/search',
+            qs: {
+                q: link,
+                part: 'snippet',
+                key: auth.yt_key,
+                maxResults: '1',
+                type: 'video'
+            },
+            json: true
         },
-        json: true
-    },
-    (err, response, body) => {
-        if(err) {
-            console.log(`Error geting YT song: ${err.stack}`);
-            throw new Error(`Error getting YT song`);
-        }
+        (err, response, body) => {
+            if(err) {
+                console.log(`Error geting YT song: ${err.stack}`);
+                throw new Error(`Error getting YT song`);
+            }
 
-        if(response.statusCode !== 200 || !body) {
-            console.log(`Didn\t receive a 200 from youtube song query, or there was no body`);
-            throw new Error(`Error getting YT song`);
-        }
+            if(response.statusCode !== 200 || !body) {
+                console.log(`Didn\t receive a 200 from youtube song query, or there was no body`);
+                throw new Error(`Error getting YT song`);
+            }
 
-        return Promise.resolve(body.items[0].id.videoId);
+            return resolve(body.items[0].id.videoId);
+        })
     });
 }
 
 module.exports.getSource = function(song) {
     try {
-        if(song.test(/s\w*c|y\w*t/)) {
-            if(song.test(/s\w*c/)) return 'sc';
-            if(song.test(/y\w*t/)) return 'yt';
+        if(/s\w*c|y\w*t/.test(song)) {
+            if(/s\w*c/.test(song)) return 'sc';
+            if(/y\w*t/.test(song)) return 'yt';
         }
         else {
-            if(song.test(/http/)) return;
+            if(/http/.test(song)) return;
             return 'query';
         }
     } catch(err) {
-        console.log(`Error with regex in getSongSource function: ${err}`);
+        console.log(`Error with regex in getSource function: ${err}`);
         return;
     }
 }
