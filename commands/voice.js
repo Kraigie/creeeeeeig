@@ -45,10 +45,10 @@ bot.registerCommand('play', (msg, args) => {
         }
 
         song.getInfo().then(song => {
-            player.addSong(song);
+            players[server].addSong(song);
         })
         .catch(err => {
-            console.log(`Error getting song: ${err}`);
+            console.log(`Error getting song: ${err.stack}`);
             bot.createMessage(msg.channel.id, 'There was an error adding your song to the queue');
         });
     })

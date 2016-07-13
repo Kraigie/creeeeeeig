@@ -14,7 +14,7 @@ module.exports = class Player {
     addSong(song) {
         if(this.queue.length == 0 && !this.conn.playing) {
             this.queue.push(song);
-            this.queue.playNext();
+            this.playNext();
         }
         else {
             this.queue.push(song);
