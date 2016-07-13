@@ -6,7 +6,9 @@ module.exports = class Player {
         this.chann = chann;
         this.queue = [];
 
-        conn.on('end', this.playNext());
+        conn.on('end', () => {
+            this.playNext()
+        });
     }
 
     addSong(song) {
