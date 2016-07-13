@@ -7,7 +7,7 @@ module.exports = class Player {
         this.queue = [];
 
         this.conn.on('end', () => {
-            //this.playNext()
+            this.playNext()
         });
 
         this.conn.on('warn', (warn) => {
