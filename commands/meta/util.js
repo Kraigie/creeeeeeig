@@ -29,7 +29,7 @@ module.exports.getLink = function(link, query) {
                 throw new Error(`Error getting YT song`);
             }
 
-            return resolve(body.items[0].id.videoId);
+            return resolve(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`);
         })
     });
 }
