@@ -6,31 +6,30 @@ const auth = require('../../auth');
 module.exports.getLink = function(link, query) {
     if(!query) return Promise.resolve(link);
 
-      request({
-          uri: 'https://www.googleapis.com/youtube/v3/search',
-          qs: {
+    request({
+        uri: 'https://www.googleapis.com/youtube/v3/search',
+        qs: {
             q: link,
             part: 'snippet',
             key: auth.yt_key,
             maxResults: '1',
             type: 'video'
-          },
-          json: true
-      },
-      (err, response, body) => {
+        },
+        json: true
+    },
+    (err, response, body) => {
         if(err) {
-          console.log(`Error geting YT song: ${err.stack}`);
-          throw new Error(`Error getting YT song`);
+            console.log(`Error geting YT song: ${err.stack}`);
+            throw new Error(`Error getting YT song`);
         }
 
         if(response.statusCode !== 200 || !body) {
-          console.log(`Didn\t receive a 200 from youtube song query, or there was no body`);
-          throw new Error(`Error getting YT song`);
+            console.log(`Didn\t receive a 200 from youtube song query, or there was no body`);
+            throw new Error(`Error getting YT song`);
         }
 
         return Promise.resolve(body.items[0].id.videoId);
-      });
-    }
+    });
 }
 
 module.exports.getSource = function(song) {
@@ -62,25 +61,25 @@ module.exports.strToMs = function(time) {
     num = num.splice(0, 3);
 
     let hours = 0,
-        minutes = 0,
-        seconds = 0;
+    minutes = 0,
+    seconds = 0;
 
     for(let i of num) {
         if(~i.indexOf('h'))
-            hours = i.match(/\d+/);
+        hours = i.match(/\d+/);
         if(~i.indexOf('m'))
-            minutes = i.match(/\d+/);
+        minutes = i.match(/\d+/);
         if(~i.indexOf('s'))
-            seconds = i.match(/\d+/);
+        seconds = i.match(/\d+/);
     }
 
     let retStr = '';
     if(hours)
-        retStr += `${parseInt(hours)} hour(s) `;
+    retStr += `${parseInt(hours)} hour(s) `;
     if(minutes)
-        retStr += `${parseInt(minutes)} minute(s) `;
+    retStr += `${parseInt(minutes)} minute(s) `;
     if(seconds)
-        retStr += `${parseInt(seconds)} second(s) `;
+    retStr += `${parseInt(seconds)} second(s) `;
 
     let indexLstMatch = time.lastIndexOf(num[num.length - 1]) + num[num.length - 1].length - 1;
     let lstSpcAftMtch = time.indexOf(' ', indexLstMatch);   //these variable names tho
