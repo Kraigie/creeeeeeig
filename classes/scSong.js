@@ -39,11 +39,11 @@ module.exports = class ScSong extends Song {
     }
 
     getStream() {
-        return Promise.resolve(Request({
+        return Request({
             url: this.streamUrl,
             qs: {
                 client_id: auth.sc_key
             }
-        }));
+        });
     }
 }

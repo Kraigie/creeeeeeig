@@ -18,7 +18,7 @@ module.exports = class Player {
         }
         else {
             this.queue.push(song);
-            bot.createMessage(chann.id, `Your song was added to the queue in position ${this.queue.length}`);
+            bot.createMessage(this.chann.id, `Your song was added to the queue in position ${this.queue.length}`);
         }
     }
 
@@ -26,9 +26,8 @@ module.exports = class Player {
         let next = this.queue.shift();
 
         if(next) {
-            next.getStream().then(stream => {
-                conn.playStream(stream);
-            })
+            this.conn.playStream(next.getStream());
+            bot.createMessage(this.chann.id, next.getPrettyInfo(true));
         }
     }
 
