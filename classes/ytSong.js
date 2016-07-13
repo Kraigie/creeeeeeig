@@ -1,6 +1,7 @@
 'use strict;'
 
 const ytdl = require('ytdl-core');
+const Song = require('./song');
 
 module.exports = class YtSong extends Song {
     constructor(link, requester, type) {
@@ -15,11 +16,11 @@ module.exports = class YtSong extends Song {
             }
 
             if(!info) {
-                throw new Error('Couldn\'t find a song with the search'));
+                throw new Error('Couldn\'t find a song with the search');
             }
 
             this.title = info.title;
-            Promise.resolve(this);
+            return Promise.resolve(this);
         });
     }
 
