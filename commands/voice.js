@@ -17,7 +17,7 @@ bot.registerCommand('join', (msg, args) => {
         players[server] = new Player(conn, msg.channel);
     })
     .catch(err => {
-        console.log(`Error joining voice channel: ${err}`);
+        console.log(`Error joining voice channel: ${err.stack}`);
         return 'There was an error joining your voice channel';
     });
 }, {
