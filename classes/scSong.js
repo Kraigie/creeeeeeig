@@ -2,7 +2,7 @@
 
 const auth = require('../auth');
 
-module.exports = class scSong extends Song {
+module.exports = class ScSong extends Song {
     constructor(link, requester, type) {
         super(link, requester, type);
         this.streamUrl = '';

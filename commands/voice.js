@@ -1,6 +1,7 @@
 const ytdl = require('ytdl-core');
 const Player = require('../classes/player');
-const Song = require('../classes/song');
+const YtSong = require('../classes/ytsong');
+const ScSong = require('../classes/scsong');
 const util = require('./meta/util');
 
 let players = {};

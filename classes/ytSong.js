@@ -2,7 +2,7 @@
 
 const ytdl = require('ytdl-core');
 
-module.exports = class ytSong extends Song {
+module.exports = class YtSong extends Song {
     constructor(link, requester, type) {
         super(link, requester, type);
     }
