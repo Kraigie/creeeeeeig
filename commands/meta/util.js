@@ -21,12 +21,12 @@ module.exports.getLink = function(link, query) {
         (err, response, body) => {
             if(err) {
                 console.log(`Error geting YT song: ${err.stack}`);
-                throw new Error(`Error getting YT song`);
+                reject(new Error(`Error getting YT song`));
             }
 
             if(response.statusCode !== 200 || !body) {
                 console.log(`Didn\t receive a 200 from youtube song query, or there was no body`);
-                throw new Error(`Error getting YT song`);
+                reject(new Error(`Error getting YT song`));
             }
 
             return resolve(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`);

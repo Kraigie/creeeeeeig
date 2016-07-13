@@ -2,6 +2,7 @@
 
 const auth = require('../auth');
 const Song = require('./song');
+const request = require('request');
 
 module.exports = class ScSong extends Song {
     constructor(link, requester, type) {
@@ -21,14 +22,14 @@ module.exports = class ScSong extends Song {
             }, (err, resp, body) => {
                 if (err) {
                     console.log(`Error getting soundcloud resolve: ${err}`);
-                    throw err;
+                    return reject(new Error(err));
                 } else if (resp.statusCode !== 200) {
                     if(resp.statusCode === 403) {
                         console.log(`Error getting soundcloud resolve : 403`);
-                        throw new Error('Received 403 from soundcloud resolve');
+                        return reject(new Error('Received 403 from soundcloud resolve'));
                     }
                     console.log(`Error getting soundcloud resolve : != 200`);
-                    throw new Error('Didn\'t receive 200 from soundcloud resolve');
+                    return reject(new Error('Didn\'t receive 200 from soundcloud resolve'));
                 } else {
                     this.title = body.title;
                     this.streamUrl = body.stream_url;
@@ -39,7 +40,7 @@ module.exports = class ScSong extends Song {
     }
 
     getStream() {
-        return Request({
+        return request({
             url: this.streamUrl,
             qs: {
                 client_id: auth.sc_key

@@ -25,6 +25,22 @@ bot.registerCommand('join', (msg, args) => {
     fullDescription: 'The bot will attempt to join your voice channel'
 });
 
+bot.registerCommand('skip', (msg, args) => {
+    let server = msg.member.guild.id;
+
+    if(!msg.member.channelID) return 'You\'re not in a voice channel';
+    if(!players[server]) return 'I\'m not in a voice channel';
+
+    let type = util.getSource(args.join(' '));
+    if(!type) return 'You didn\'t supply a valid song';
+
+    players[server].skip();
+}, {
+    description: 'Make me play a song',
+    fullDescription: 'The bot will attempt to join your voice channel',
+    usage: '<youtube url> or <soundcloud url> or <youtube search>'
+});
+
 bot.registerCommand('play', (msg, args) => {
     if(args.length == 0) return 'Please supply some form of song';
 
@@ -58,6 +74,7 @@ bot.registerCommand('play', (msg, args) => {
     });
 
 }, {
-    description: 'Make me join your voice channel',
-    fullDescription: 'The bot will attempt to join your voice channel'
+    description: 'Make me play a song',
+    fullDescription: 'The bot will attempt to join your voice channel',
+    usage: '<youtube url> or <soundcloud url> or <youtube search>'
 });

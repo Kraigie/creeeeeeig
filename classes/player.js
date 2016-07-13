@@ -6,8 +6,16 @@ module.exports = class Player {
         this.chann = chann;
         this.queue = [];
 
-        conn.on('end', () => {
-            this.playNext()
+        this.conn.on('end', () => {
+            //this.playNext()
+        });
+
+        this.conn.on('warn', (warn) => {
+            console.log('warn: ' + warn);
+        });
+
+        this.conn.on('error', (err) => {
+            console.log(err);
         });
     }
 
@@ -26,12 +34,17 @@ module.exports = class Player {
         let next = this.queue.shift();
 
         if(next) {
-            this.conn.playStream(next.getStream());
-            bot.createMessage(this.chann.id, next.getPrettyInfo(true));
+            try {
+                this.conn.playStream(next.getStream());
+                bot.createMessage(this.chann.id, next.getPrettyInfo(true));
+            } catch (err) {
+                console.log(`Error in playNext func: ${err}`);
+                bot.createMessage(this.chann.id, `There was an error playing your song`);
+            }
         }
     }
 
     skip() {
-        conn.stopPlaying();
+        this.conn.stopPlaying();
     }
 }

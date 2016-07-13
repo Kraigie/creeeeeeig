@@ -13,11 +13,11 @@ module.exports = class YtSong extends Song {
             ytdl.getInfo(this.link, (err, info) => {
                 if(err) {
                     console.log(`Error getting yt song info: ${err}`)
-                    throw err;
+                    return reject(err);
                 }
 
                 if(!info) {
-                    throw new Error('Couldn\'t find a song with the search');
+                    return reject(new Error('Couldn\'t find a song with the search'));
                 }
 
                 this.title = info.title;
