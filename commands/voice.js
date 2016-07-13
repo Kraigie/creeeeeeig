@@ -36,7 +36,12 @@ bot.registerCommand('play', (msg, args) => {
     if(!type) return 'You didn\'t supply a valid song';
 
     let link = util.getLink(args.join(' '), type === 'query').then(link => {
-        let song = new Song(link, msg.member.nick || msg.member.user.username, type);
+        if(type === 'sc') {
+            let song = new ScSong(link, msg.member.nick || msg.member.user.username, 'sc');
+        } else {
+            let song = new YtSong(link, msg.member.nick || msg.member.user.username, 'yt');
+        }
+
         song.getInfo().then(song => {
             player.addSong(song);
         })
