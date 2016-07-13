@@ -1,10 +1,59 @@
 'use strict';
 
+const request = require('request');
+const auth = require('../../auth');
+
+module.exports.getLink = function(link, query) {
+    if(!query) return Promise.resolve(link);
+
+      request({
+          uri: 'https://www.googleapis.com/youtube/v3/search',
+          qs: {
+            q: link,
+            part: 'snippet',
+            key: auth.yt_key,
+            maxResults: '1',
+            type: 'video'
+          },
+          json: true
+      },
+      (err, response, body) => {
+        if(err) {
+          console.log(`Error geting YT song: ${err.stack}`);
+          throw new Error(`Error getting YT song`);
+        }
+
+        if(response.statusCode !== 200 || !body) {
+          console.log(`Didn\t receive a 200 from youtube song query, or there was no body`);
+          throw new Error(`Error getting YT song`);
+        }
+
+        return Promise.resolve(body.items[0].id.videoId);
+      });
+    }
+}
+
+module.exports.getSource = function(song) {
+    try {
+        if(song.test(/s\w*c|y\w*t/)) {
+            if(song.test(/s\w*c/)) return 'sc';
+            if(song.test(/y\w*t/)) return 'yt';
+        }
+        else {
+            if(song.test(/http/)) return;
+            return 'query';
+        }
+    } catch(err) {
+        console.log(`Error with regex in getSongSource function: ${err}`);
+        return;
+    }
+}
+
 module.exports.strToMs = function(time) {
     let num = 0;
     try {
         num = time.match(/(\d+ ?[mhs])/gi);
-    } catch (err) {
+    } catch(err) {
         console.log(`Error with regex in strToMs function: ${err}`);
         return;
     }
