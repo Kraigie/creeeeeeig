@@ -2,9 +2,10 @@ const config = require('../config');
 
 //TODO: Get number of deleted somehow
 //TODO: Get the purge command fixed so it deletes the proper amount
-//TODO: Clean them case sensitivity
-//TODO: Clean them nicknames
+//TODO: Clean them / mute case sensitivity
+//TODO: Clean them / mute nicknames
 //TODO: Should userIDs override the rest of the permissions? I think so
+//TODO: Change mute to use Eris permission
 
 bot.registerCommand('mute', (msg, args) => {
     if(args.length === 0) return 'Please supply a user to mute';
