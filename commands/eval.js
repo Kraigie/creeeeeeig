@@ -1,5 +1,6 @@
 const config = require('../config');
 const now = require('performance-now');
+const util = require('util');
 
 bot.registerCommand('eval', (msg, args) => {
     let before = now();
@@ -12,7 +13,7 @@ bot.registerCommand('eval', (msg, args) => {
         let retStr = `\`\`\`javascript\n` +
 
         `Input: ${args.join(' ')}\n` +
-        `Output: ${evald}\n` +
+        `Output: ${typeof evald == 'object'? util.inspect(evald) : evald}\n` +
         `Time: ${(after - before).toFixed(3)} ms\`\`\``;
 
         return retStr;
