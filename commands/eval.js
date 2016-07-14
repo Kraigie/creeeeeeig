@@ -1,12 +1,11 @@
 const config = require('../config');
 const now = require('performance-now');
-const util = require('util');
 
 bot.registerCommand('eval', (msg, args) => {
     let before = now();
 
     try {
-        let evald = eval(args.join(' ')); // jshint ignore:line
+        let evald = eval(args.join(' '));
         if(evald && evald.length > 1000)
             evald = evald.substring(0, 1000);
         let after = now();

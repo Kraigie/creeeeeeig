@@ -1,0 +1,12 @@
+env:
+    es6: true
+    node: true
+extends: "eslint:recommended"
+parserOptions:
+    ecmaVersion: 6
+rules:
+    semi: [2, "always"]
+    no-unused-vars: [2, argsIgnorePattern: "args"]
+    no-console: 0
+globals:
+    "bot": true

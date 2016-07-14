@@ -1,4 +1,3 @@
-const ytdl = require('ytdl-core');
 const Player = require('../classes/player');
 const YtSong = require('../classes/ytsong');
 const ScSong = require('../classes/scsong');
@@ -48,7 +47,7 @@ bot.registerCommand('play', (msg, args) => {
     let type = util.getSource(args.join(' '));
     if(!type) return 'You didn\'t supply a valid song';
 
-    let link = util.getLink(args.join(' '), type === 'query').then(link => {
+    util.getLink(args.join(' '), type === 'query').then(link => {
         let song = {};
         if(type === 'sc') {
             song = new ScSong(link, msg.member.nick || msg.member.user.username, 'sc');
