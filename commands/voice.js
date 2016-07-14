@@ -30,15 +30,11 @@ bot.registerCommand('skip', (msg, args) => {
 
     if(!msg.member.channelID) return 'You\'re not in a voice channel';
     if(!players[server]) return 'I\'m not in a voice channel';
-
-    let type = util.getSource(args.join(' '));
-    if(!type) return 'You didn\'t supply a valid song';
-
+    
     players[server].skip();
 }, {
-    description: 'Make me play a song',
-    fullDescription: 'The bot will attempt to join your voice channel',
-    usage: '<youtube url> or <soundcloud url> or <youtube search>'
+    description: 'Skip the current song',
+    fullDescription: 'Skips to the next song or stops playing if the queue is empty'
 });
 
 bot.registerCommand('play', (msg, args) => {
