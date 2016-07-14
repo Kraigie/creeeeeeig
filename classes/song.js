@@ -1,4 +1,4 @@
-'use strict;'
+'use strict;';
 
 module.exports = class Song {
     constructor(link, requester, type) {
@@ -10,7 +10,7 @@ module.exports = class Song {
     }
 
     getPrettyInfo(playing) {
-        if (playing) return `:headphones: \`${this.title}\` | **${this.requester}** | from ${this.type}`
-        return `${this.title} | ${this.requester} | from ${this.type}`
+        if (playing) return `:headphones: \`${this.title}\` | **${this.requester}** | from ${this.type}`;
+        return `${this.title} | ${this.requester} | from ${this.type}`;
     }
-}
+};

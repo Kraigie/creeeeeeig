@@ -1,4 +1,4 @@
-'use strict';
+'use strict;';
 
 const request = require('request');
 const auth = require('../../auth');
@@ -30,9 +30,9 @@ module.exports.getLink = function(link, query) {
             }
 
             return resolve(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`);
-        })
+        });
     });
-}
+};
 
 module.exports.getSource = function(song) {
     try {
@@ -48,7 +48,7 @@ module.exports.getSource = function(song) {
         console.log(`Error with regex in getSource function: ${err}`);
         return;
     }
-}
+};
 
 module.exports.strToMs = function(time) {
     let num = 0;
@@ -90,5 +90,5 @@ module.exports.strToMs = function(time) {
         ms: (parseInt(hours) * 3600000) + (parseInt(minutes) * 60000) + (parseInt(seconds) * 1000),
         str: retStr,
         content: time.substring(lstSpcAftMtch)
-    }
-}
+    };
+};

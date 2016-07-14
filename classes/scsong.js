@@ -1,4 +1,4 @@
-'use strict;'
+'use strict;';
 
 const auth = require('../auth');
 const Song = require('./song');
@@ -35,7 +35,7 @@ module.exports = class ScSong extends Song {
                     this.streamUrl = body.stream_url;
                     return resolve(this);
                 }
-            })
+            });
         });
     }
 
@@ -47,4 +47,4 @@ module.exports = class ScSong extends Song {
             }
         });
     }
-}
+};

@@ -1,4 +1,4 @@
-'use strict;'
+'use strict;';
 
 module.exports = class Player {
     constructor(conn, chann) {
@@ -7,7 +7,7 @@ module.exports = class Player {
         this.queue = [];
 
         this.conn.on('end', () => {
-            this.playNext()
+            this.playNext();
         });
 
         this.conn.on('warn', (warn) => {
@@ -20,7 +20,7 @@ module.exports = class Player {
     }
 
     addSong(song) {
-        if(this.queue.length == 0 && !this.conn.playing) {
+        if(this.queue.length === 0 && !this.conn.playing) {
             this.queue.push(song);
             this.playNext();
         }
@@ -47,4 +47,4 @@ module.exports = class Player {
     skip() {
         this.conn.stopPlaying();
     }
-}
+};

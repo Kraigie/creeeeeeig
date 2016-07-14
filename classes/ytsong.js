@@ -1,4 +1,4 @@
-'use strict;'
+'use strict;';
 
 const ytdl = require('ytdl-core');
 const Song = require('./song');
@@ -12,7 +12,7 @@ module.exports = class YtSong extends Song {
         return new Promise((resolve, reject) => {
             ytdl.getInfo(this.link, (err, info) => {
                 if(err) {
-                    console.log(`Error getting yt song info: ${err}`)
+                    console.log(`Error getting yt song info: ${err}`);
                     return reject(err);
                 }
 
@@ -22,14 +22,14 @@ module.exports = class YtSong extends Song {
 
                 this.title = info.title;
                 return resolve(this);
-            })
+            });
         });
     }
 
     getStream() {
         return ytdl(this.link, {filter: 'audioonly'}).on('error', err => {
-            console.log(`Error getting yt song stream: ${err}`)
+            console.log(`Error getting yt song stream: ${err}`);
             throw err;
         });
     }
-}
+};

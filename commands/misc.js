@@ -1,7 +1,7 @@
 const auth = require('../auth');
 const util = require('./meta/util');
 const request = require('request');
-const Array = require('fixed-2d-array');
+const ezArray = require('fixed-2d-array');
 
 bot.registerCommand('ping', (msg, args) => {
     bot.createMessage(msg.channel.id, 'pong').
@@ -14,7 +14,7 @@ bot.registerCommand('ping', (msg, args) => {
 });
 
 bot.registerCommand('roll', (msg, args) => {
-    if(args.length == 0) return Math.floor(Math.random() * 100) + 1;
+    if(args.length === 0) return Math.floor(Math.random() * 100) + 1;
 
     let roll = parseInt(args[0]);
     if(!roll) return 'Please supply a number';
@@ -27,7 +27,7 @@ bot.registerCommand('roll', (msg, args) => {
 });
 
 bot.registerCommand('remindme', (msg, args) => {
-    if(args.length == 0) return 'Please supply a time and reason';
+    if(args.length === 0) return 'Please supply a time and reason';
 
     let time = util.strToMs(args.join(' '));
     if(!time) {
@@ -36,14 +36,14 @@ bot.registerCommand('remindme', (msg, args) => {
 
     if(!time.content) {
         setTimeout(() =>
-            bot.createMessage(msg.channel.id, `${msg.author.mention}, you wanted me to remind you`)
-        , time.ms);
+            bot.createMessage(msg.channel.id, `${msg.author.mention}, you wanted me to remind you`),
+            time.ms);
         return `${msg.author.mention}, I will remind you in ${time.str}`;
     }
 
     setTimeout(() =>
-        bot.createMessage(msg.channel.id,`${msg.author.mention}, you wanted me to remind you: ${time.content}`)
-    , time.ms);
+        bot.createMessage(msg.channel.id,`${msg.author.mention}, you wanted me to remind you: ${time.content}`),
+        time.ms);
     return `${msg.author.mention}, I will remind you in ${time.str}`;
 }, {
     description: 'Have me remind you of something',
@@ -57,7 +57,7 @@ bot.registerCommand('word', (msg, args) => {
     let ezCalcArr = strParts.concat(newPart);
 
     let len = ezCalcArr.length;
-    let arr = new Array(len, len, ' ');
+    let arr = new ezArray(len, len, ' ');
 
     for(let x = 0; x < len; x++) {
         for(let y = 0; y < len; y++) {
@@ -107,7 +107,7 @@ bot.registerCommand('love', (msg, args) => {
 });
 
 bot.registerCommand('avi', (msg, args) => {
-    if(args.length == 0 || msg.mentions.length == 0) return 'Please specify a user by mentioning them';
+    if(args.length === 0 || msg.mentions.length === 0) return 'Please specify a user by mentioning them';
 
     let members = msg.channel.guild.members;
     let count = 0;
@@ -119,7 +119,7 @@ bot.registerCommand('avi', (msg, args) => {
         );
 
         if(member) {
-            retStr += `https://discordapp.com/api/users/${member.id}/avatars/${member.user.avatar}.jpg\n`
+            retStr += `https://discordapp.com/api/users/${member.id}/avatars/${member.user.avatar}.jpg\n`;
             count++;
         }
     });
@@ -134,7 +134,7 @@ bot.registerCommand('avi', (msg, args) => {
 });
 
 bot.registerCommand('weather', (msg, args) => {
-    if(args.length == 0) return "Please specify a location";
+    if(args.length === 0) return "Please specify a location";
 
     let options = {
         uri: 'http://api.openweathermap.org/data/2.5/weather',
@@ -143,7 +143,7 @@ bot.registerCommand('weather', (msg, args) => {
             q: args.join()
         },
         json: true
-    }
+    };
 
     request(options, (err, resp, body) => {
         if (err) {
@@ -152,7 +152,7 @@ bot.registerCommand('weather', (msg, args) => {
         }
 
         if (body.cod !== 200 || !body.main)
-        return `${msg.author.mention}, your location could not be found`
+        return `${msg.author.mention}, your location could not be found`;
 
         let temp = body.main.temp;
         temp = (temp - 273.15) * 1.8000 + 32.00;

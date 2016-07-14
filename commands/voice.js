@@ -10,7 +10,7 @@ bot.registerCommand('join', (msg, args) => {
     let server = msg.member.guild.id;
 
     if(!msg.member.channelID) return 'You\'re not in a voice channel';
-    if(players[server]) return 'I\'m already in a voice channel'
+    if(players[server]) return 'I\'m already in a voice channel';
 
     bot.joinVoiceChannel(msg.member.channelID)
     .then(conn => {
@@ -30,7 +30,7 @@ bot.registerCommand('skip', (msg, args) => {
 
     if(!msg.member.channelID) return 'You\'re not in a voice channel';
     if(!players[server]) return 'I\'m not in a voice channel';
-    
+
     players[server].skip();
 }, {
     description: 'Skip the current song',
@@ -38,7 +38,7 @@ bot.registerCommand('skip', (msg, args) => {
 });
 
 bot.registerCommand('play', (msg, args) => {
-    if(args.length == 0) return 'Please supply some form of song';
+    if(args.length === 0) return 'Please supply some form of song';
 
     let server = msg.member.guild.id;
 
