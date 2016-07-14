@@ -8,7 +8,7 @@ bot = new Eris.CommandClient(auth.token, {}, {
     owner: 'Kraigie'
 });
 
-const loader = require('./commands/meta/loader');
+require('./commands/meta/loader');
 
 bot.on("ready", () => {
     console.log("Ready!");
