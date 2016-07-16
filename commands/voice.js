@@ -9,7 +9,7 @@ bot.registerCommand('join', (msg, args) => {
     let server = msg.member.guild.id;
 
     if(!msg.member.channelID) return 'You\'re not in a voice channel';
-    if(players[server]) return 'I\'m already in a voice channel';
+    if(players[server]) return 'I\'m already in a voice channel'; //TODO: Allow the bot to change voice channels
 
     bot.joinVoiceChannel(msg.member.channelID)
     .then(conn => {
