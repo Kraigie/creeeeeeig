@@ -20,6 +20,7 @@
     "eris": "github:abalabahaha/eris#dev",
     "fixed-2d-array": "^1.2.0",
     "performance-now": "^0.2.0",
+    "repl-node": "0.0.1",
     "request": "^2.72.0",
     "ytdl-core": "^0.7.16"
   }
