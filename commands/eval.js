@@ -2,8 +2,6 @@ const config = require('../config');
 const now = require('performance-now');
 const util = require('util');
 
-//TODO: Add REPL
-
 bot.registerCommand('eval', (msg, args) => {
     let before = now();
 
