@@ -1,11 +1,10 @@
 const config = require('../config');
+const Permissions = require('eris').Constants.Permissions;
 
 //TODO: Get number of deleted somehow
-//TODO: Get the purge command fixed so it deletes the proper amount
 //TODO: Clean them / mute case sensitivity
 //TODO: Clean them / mute nicknames
 //TODO: Should userIDs override the rest of the permissions? I think so
-//TODO: Change mute to use Eris permission
 
 bot.registerCommand('mute', (msg, args) => {
     if(args.length === 0) return 'Please supply a user to mute';
@@ -13,7 +12,7 @@ bot.registerCommand('mute', (msg, args) => {
     let toFind = bot.users.find(u => u.username === args[0]);
     if(!toFind) return 'Please supply a valid user';
 
-    bot.editChannelPermissions(msg.channel.id, msg.author.id, 0, 2048);
+    bot.editChannelPermissions(msg.channel.id, msg.author.id, 0, Permissions.sendMessages);
 }, {
     description: 'Deletes messages',
     fullDescription: 'The bot will delete messages from all users in the last specified number of messages',
@@ -32,9 +31,7 @@ let clean = bot.registerCommand('clean', (msg, args) => {
     let toDelete = parseInt(args[0]);
     if(!toDelete) return 'Please supply a valid number';
 
-    bot.deleteMessage(msg.channel.id, msg.id);
-
-    bot.purgeChannel(msg.channel.id, toDelete);
+    bot.purgeChannel(msg.channel.id, toDelete + 1);
 }, {
     description: 'Deletes messages',
     fullDescription: 'The bot will delete messages from all users in the last specified number of messages',
@@ -73,9 +70,7 @@ clean.registerSubcommand('me', (msg, args) => {
     let toDelete = parseInt(args[0]);
     if(!toDelete) return 'Please supply a valid number';
 
-    bot.deleteMessage(msg.channel.id, msg.id);
-
-    bot.purgeChannel(msg.channel.id, toDelete, (logMsg) => {
+    bot.purgeChannel(msg.channel.id, toDelete + 1, (logMsg) => {
         if(logMsg.author.id === msg.author.id) return true;
     });
 }, {
