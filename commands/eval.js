@@ -7,20 +7,21 @@ bot.registerCommand('eval', (msg, args) => {
 
     try {
         let evald = eval(args.join(' '));
-        if(evald && evald.length > 1000)
-            evald = evald.substring(0, 1000);
-        let after = now();
-        let retStr = `\`\`\`javascript\n` +
+        evald = util.inspect(evald);
 
+        if(evald && evald.length > 1800) evald = evald.substring(0, 1800);
+        let after = now();
+
+        let retStr = `\`\`\`javascript\n` +
         `Input: ${args.join(' ')}\n` +
-        `Output: ${typeof evald == 'object'? util.inspect(evald) : evald}\n` +
+        `Output: ${evald}\n` +
         `Time: ${(after - before).toFixed(3)} ms\`\`\``;
 
         return retStr;
     } catch (err) {
         let after = now();
-        let retStr = `\`\`\`javascript\n` +
 
+        let retStr = `\`\`\`javascript\n` +
         `Input: ${args.join(' ')}\n` +
         `Error: ${err}\n` +
         `Time: ${(after - before).toFixed(3)} ms\`\`\``;
