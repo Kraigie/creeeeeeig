@@ -8,11 +8,12 @@ let players = {};
 bot.registerCommand('join', (msg, args) => {
     let server = msg.member.guild.id;
 
-    if(!msg.member.channelID) return 'You\'re not in a voice channel';
+    if(!msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
     if(players[server]) return 'I\'m already in a voice channel'; //TODO: Allow the bot to change voice channels
 
-    bot.joinVoiceChannel(msg.member.channelID)
+    bot.joinVoiceChannel(msg.member.voiceState.channelID)
     .then(conn => {
+        console.log(conn);
         players[server] = new Player(conn, msg.channel);
     })
     .catch(err => {
@@ -27,7 +28,7 @@ bot.registerCommand('join', (msg, args) => {
 bot.registerCommand('skip', (msg, args) => {
     let server = msg.member.guild.id;
 
-    if(!msg.member.channelID) return 'You\'re not in a voice channel';
+    if(!msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
     if(!players[server]) return 'I\'m not in a voice channel';
 
     players[server].skip();
@@ -41,7 +42,7 @@ bot.registerCommand('play', (msg, args) => {
 
     let server = msg.member.guild.id;
 
-    if(!msg.member.channelID) return 'You\'re not in a voice channel';
+    if(!msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
     if(!players[server]) return 'I\'m not in a voice channel';
 
     let type = util.getSource(args.join(' '));
