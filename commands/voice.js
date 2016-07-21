@@ -13,7 +13,6 @@ bot.registerCommand('join', (msg, args) => {
 
     bot.joinVoiceChannel(msg.member.voiceState.channelID)
     .then(conn => {
-        console.log(conn);
         players[server] = new Player(conn, msg.channel);
     })
     .catch(err => {
@@ -32,6 +31,7 @@ bot.registerCommand('skip', (msg, args) => {
     if(!players[server]) return 'I\'m not in a voice channel';
 
     players[server].skip();
+    return 'Song was skipped';
 }, {
     description: 'Skip the current song',
     fullDescription: 'Skips to the next song or stops playing if the queue is empty'
