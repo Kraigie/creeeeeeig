@@ -24,6 +24,18 @@ bot.registerCommand('join', (msg, args) => {
     fullDescription: 'The bot will attempt to join your voice channel'
 });
 
+bot.registerCommand('queue', (msg, args) => {
+    let server = msg.member.guild.id;
+
+    if(!msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
+    if(!players[server]) return 'I\'m not in a voice channel'; //TODO: Allow the bot to change voice channels
+
+    return players[server].queueString;
+}, {
+    description: 'Make me join your voice channel',
+    fullDescription: 'The bot will attempt to join your voice channel'
+});
+
 bot.registerCommand('skip', (msg, args) => {
     let server = msg.member.guild.id;
 

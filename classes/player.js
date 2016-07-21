@@ -44,6 +44,17 @@ module.exports = class Player {
         }
     }
 
+    get queueString() {
+        if(this.queue.length === 0) return '\`The queue is empty\`';
+        let retStr = '```xl\n';
+        let num = 1;
+        for(let s of this.queue) {
+            retStr += `${num++}.] ${s.getPrettyInfo(false)}\n`;
+        }
+        retStr += '```';
+        return retStr;
+    }
+
     skip() {
         this.conn.stopPlaying();
     }
