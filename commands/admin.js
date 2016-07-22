@@ -1,4 +1,3 @@
-const config = require('../config');
 const Permissions = require('eris').Constants.Permissions;
 
 //TODO: Get number of deleted somehow
@@ -18,7 +17,6 @@ bot.registerCommand('mute', (msg, args) => {
     fullDescription: 'The bot will delete messages from all users in the last specified number of messages',
     usage: '<number to search through>',
     requirements: {
-        userIDs: [config.evalid],
         permissions: {
             "manageMessages": true
         }
@@ -26,10 +24,10 @@ bot.registerCommand('mute', (msg, args) => {
 });
 
 let clean = bot.registerCommand('clean', (msg, args) => {
-    if(args.length === 0) return 'Please supply a number of messages';
-
-    let toDelete = parseInt(args[0]);
+    let toDelete = parseInt(args.length > 0 ? args[0] : 10);
     if(!toDelete) return 'Please supply a valid number';
+
+    console.log(toDelete);
 
     bot.purgeChannel(msg.channel.id, toDelete + 1);
 }, {
@@ -37,7 +35,6 @@ let clean = bot.registerCommand('clean', (msg, args) => {
     fullDescription: 'The bot will delete messages from all users in the last specified number of messages',
     usage: '<number to search through>',
     requirements: {
-        userIDs: [config.evalid],
         permissions: {
             "manageMessages": true
         }
@@ -45,9 +42,7 @@ let clean = bot.registerCommand('clean', (msg, args) => {
 });
 
 clean.registerSubcommand('you', (msg, args) => {
-    if(args.length === 0) return 'Please supply a number of messages';
-
-    let toDelete = parseInt(args[0]);
+    let toDelete = parseInt(args.length > 0 ? args[0] : 10);
     if(!toDelete) return 'Please supply a valid number';
 
     bot.deleteMessage(msg.channel.id, msg.id);
@@ -58,16 +53,11 @@ clean.registerSubcommand('you', (msg, args) => {
 }, {
     description: 'Delete bot\'s messages',
     fullDescription: 'The bot will delete messages from himself in the last specified number of messages',
-    usage: '<number to search through>',
-    requirements: {
-        userIDs: [config.evalid]
-    }
+    usage: '<number to search through>'
 });
 
 clean.registerSubcommand('me', (msg, args) => {
-    if(args.length === 0) return 'Please supply a number of messages';
-
-    let toDelete = parseInt(args[0]);
+    let toDelete = parseInt(args.length > 0 ? args[0] : 10);
     if(!toDelete) return 'Please supply a valid number';
 
     bot.purgeChannel(msg.channel.id, toDelete + 1, (logMsg) => {
@@ -76,19 +66,16 @@ clean.registerSubcommand('me', (msg, args) => {
 }, {
     description: 'Deletes your messages',
     fullDescription: 'The bot will delete messages from you in the last specified number of messages',
-    usage: '<number to search through>',
-    requirements: {
-        userIDs: [config.evalid]
-    }
+    usage: '<number to search through>'
 });
 
 clean.registerSubcommand('them', (msg, args) => {
-    if(args.length === 0) return 'Please supply a user and a number of messages';
+    if(args.length < 1) return 'Please supply a user';
 
     let toFind = bot.users.find(u => u.username === args[0]);
     if(!toFind) return 'Please supply a valid user';
 
-    let toDelete = parseInt(args[1]);
+    let toDelete = parseInt(args.length > 1 ? args[1] : 10);
     if(!toDelete) return 'Please supply a valid number';
 
     bot.deleteMessage(msg.channel.id, msg.id);
@@ -101,7 +88,6 @@ clean.registerSubcommand('them', (msg, args) => {
     fullDescription: 'The bot will delete messages from a user in the last specified number of messages',
     usage: '<user name **not a nickname**> <number to search through>',
     requirements: {
-        userIDs: [config.evalid],
         permissions: {
             "manageMessages": true
         }
