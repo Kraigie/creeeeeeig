@@ -38,7 +38,7 @@ module.exports = class TagManager {
                         return reject(err);
                     }
 
-                    resolve(doc.content);
+                    return resolve(doc.content);
                 });
             });
         });
