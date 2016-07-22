@@ -32,7 +32,7 @@ module.exports = class TagManager {
                     return resolve(`Tag \`${tag.tag}\` couldn't be found`);
                 }
 
-                this.tags.update({tag:tag}, {$set: {views: doc.views + 1}}, {}, (err) => {
+                this.tags.update(tag, {$inc: {views: 1}}, {}, (err) => {
                     if(err) {
                         console.log(`Error updating document view count: ${err}`);
                         return reject(err);
