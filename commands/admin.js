@@ -3,7 +3,8 @@ const Permissions = require('eris').Constants.Permissions;
 //TODO: Get number of deleted somehow
 //TODO: Clean them / mute case sensitivity
 //TODO: Clean them / mute nicknames
-//TODO: Should userIDs override the rest of the permissions? I think so
+//TODO: Should userIDs override the rest of the permissions? I think so - ALL OF THIS NEEDS TO BE FIXED
+//TODO: Serverwide mute?
 
 bot.registerCommand('mute', (msg, args) => {
     if(args.length === 0) return 'Please supply a user to mute';
@@ -13,8 +14,8 @@ bot.registerCommand('mute', (msg, args) => {
 
     bot.editChannelPermissions(msg.channel.id, msg.author.id, 0, Permissions.sendMessages);
 }, {
-    description: 'Deletes messages',
-    fullDescription: 'The bot will delete messages from all users in the last specified number of messages',
+    description: 'Mutes a user',
+    fullDescription: 'Mutes a user so they will not be able to send messages in their current channel',
     usage: '<number to search through>',
     requirements: {
         permissions: {
@@ -26,8 +27,6 @@ bot.registerCommand('mute', (msg, args) => {
 let clean = bot.registerCommand('clean', (msg, args) => {
     let toDelete = parseInt(args.length > 0 ? args[0] : 10);
     if(!toDelete) return 'Please supply a valid number';
-
-    console.log(toDelete);
 
     bot.purgeChannel(msg.channel.id, toDelete + 1);
 }, {
