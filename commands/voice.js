@@ -32,8 +32,8 @@ bot.registerCommand('queue', (msg, args) => {
 
     return players[server].queueString;
 }, {
-    description: 'Make me join your voice channel',
-    fullDescription: 'The bot will attempt to join your voice channel'
+    description: 'See what\'s in the queue',
+    fullDescription: 'The bot will print out a list of currently queued songs'
 });
 
 bot.registerCommand('skip', (msg, args) => {
