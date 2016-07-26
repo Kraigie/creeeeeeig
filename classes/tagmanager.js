@@ -3,29 +3,33 @@
 let config = require('../config.js');
 let Datastore = require('nedb');
 
+function createStore(serverId) {
+    return new Datastore({
+        filename: `${config.db_store_location}/${serverId}/tags.db`,
+        autoload: true,
+        onload: (err) => {
+            if(err) console.log(`Error in onLoad while creating db: ${err}`);
+            this.tags.ensureIndex({ fieldName: 'tag', unique: true }, err => {
+                if(err) {
+                    console.log(`Error ensuring unique index: ${err}`);
+                }
+            });
+        }
+    });
+}
+
 module.exports = class TagManager {
-    constructor(serverid) {
-        this.serverid = serverid;
-        this.tags = new Datastore({
-            filename: `${config.db_store_location}/${this.serverid}/tags.db`,
-            autoload: true,
-            onload: (err) => {
-                if(err) console.log(`Error in onLoad while creating db: ${err}`);
-                this.tags.ensureIndex({ fieldName: 'tag', unique: true }, err => {
-                    if(err) {
-                        console.log(`Error ensuring unique index: ${err}`);
-                    }
-                });
-            }
-        });
+    constructor() {
+        this.tags = {};
     }
 
-    getTag(tag) {
+    getTag(tag, serverId) {
+        let tags = this.tags[serverId] = this.tags[serverId] || createStore(serverId);
         return new Promise((resolve, reject) => {
-            this.tags.findOne(tag, (err, doc) => {
+            tags.findOne(tag, (err, doc) => {
                 if(err) {
                     console.log(`'Error getting tag: ${err}'`);
-                    return reject(err);
+                    return reject();
                 }
 
                 if(!doc) {
@@ -35,7 +39,7 @@ module.exports = class TagManager {
                 this.tags.update(tag, {$inc: {views: 1}}, {}, (err) => {
                     if(err) {
                         console.log(`Error updating document view count: ${err}`);
-                        return reject(err);
+                        return reject();
                     }
 
                     return resolve(doc.content);
@@ -44,13 +48,14 @@ module.exports = class TagManager {
         });
     }
 
-    createTag(toCreate) {
+    createTag(toCreate, serverId) {
+        let tags = this.tags[serverId] = this.tags[serverId] || createStore(serverId);
         return new Promise((resolve, reject) => {
-            this.tags.insert(toCreate, (err) => {
+            tags.insert(toCreate, (err) => {
                 if(err) {
                     if(err.errorType === 'uniqueViolated') return resolve(`Tag \`${toCreate.tag}\` already exists`);
                     console.log(`Error inserting document: ${err.message}`);
-                    return reject(err);
+                    return reject();
                 }
 
                 return resolve(`:ok: Tag \`${toCreate.tag}\` successfully created :ok:`);
@@ -58,12 +63,13 @@ module.exports = class TagManager {
         });
     }
 
-    removeTag(toDelete) {
+    removeTag(toDelete, serverId) {
+        let tags = this.tags[serverId] = this.tags[serverId] || createStore(serverId);
         return new Promise((resolve, reject) => {
-            this.tags.remove(toDelete, {}, (err, numRemoved) => {
+            tags.remove(toDelete, {}, (err, numRemoved) => {
                 if(err) {
                     console.log(`Error deleting document: ${err}`);
-                    return reject(err);
+                    return reject();
                 }
 
                 if(numRemoved === 0) return resolve(`The tag you supplied does not exist or you did not create it`);
@@ -73,12 +79,13 @@ module.exports = class TagManager {
         });
     }
 
-    updateTag(old, toChange) {
+    updateTag(old, toChange, serverId) {
+        let tags = this.tags[serverId] = this.tags[serverId] || createStore(serverId);
         return new Promise((resolve, reject) => {
-            this.tags.update(old, toChange, {}, (err, numAffected) => {
+            tags.update(old, toChange, {}, (err, numAffected) => {
                 if (err) {
                     console.log(`Error updating document: ${err}`);
-                    return reject(err);
+                    return reject();
                 }
 
                 if(numAffected === 0) {
@@ -90,12 +97,13 @@ module.exports = class TagManager {
         });
     }
 
-    getAllTags() {
+    getAllTags(serverId) {
+        let tags = this.tags[serverId] = this.tags[serverId] || createStore(serverId);
         return new Promise((resolve, reject) => {
-            this.tags.find({}, (err, docs) => {
+            tags.find({}, (err, docs) => {
                 if (err) {
                     console.log(`Error retrieving documents: ${err}`);
-                    return reject(err);
+                    return reject();
                 }
 
                 if (!docs) {
