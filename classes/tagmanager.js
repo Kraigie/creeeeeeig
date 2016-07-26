@@ -1,6 +1,6 @@
 'use strict;';
 
-let config = require('../config.js');
+let config = require('../config.json');
 let Datastore = require('nedb');
 
 function createStore(serverId) {
