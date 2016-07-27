@@ -90,7 +90,7 @@ module.exports = class TagManager {
                 }
 
                 if(numAffected === 0) {
-                    return resolve(`Tag doesn't exist`);
+                    return resolve(`Tag doesn't exist or you don\'t own it`);
                 }
 
                 return resolve(`The tag \`${old.tag}\` was updated :ok:`);
