@@ -44,6 +44,14 @@ module.exports = class Player {
         }
     }
 
+    skip() {
+        this.conn.stopPlaying();
+    }
+
+    get playing() {
+        return this.conn.playing;
+    }
+
     get queueString() {
         if(this.queue.length === 0) return '\`The queue is empty\`';
         let retStr = '```xl\n';
@@ -55,7 +63,7 @@ module.exports = class Player {
         return retStr;
     }
 
-    skip() {
-        this.conn.stopPlaying();
+    get channel() {
+        return this.chann.id;
     }
 };

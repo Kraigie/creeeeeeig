@@ -9,7 +9,7 @@ bot.registerCommand('join', (msg, args) => {
     let server = msg.member.guild.id;
 
     if(!msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
-    if(players[server]) return 'I\'m already in a voice channel'; //TODO: Allow the bot to change voice channels
+    if(players[server] && players[server].playing) return 'I\'m playing something in a different voice channel';
 
     bot.joinVoiceChannel(msg.member.voiceState.channelID)
     .then(conn => {
@@ -22,6 +22,19 @@ bot.registerCommand('join', (msg, args) => {
 }, {
     description: 'Make me join your voice channel',
     fullDescription: 'The bot will attempt to join your voice channel'
+});
+
+bot.registerCommand('leave', (msg, args) => {
+    let server = msg.member.guild.id;
+
+    if(!players[server]) return 'I\'m not in a voice channel';
+
+    bot.leaveVoiceChannel(players[server].channel);
+    players[server] = null;
+
+}, {
+    description: 'Make me leave my voice channel',
+    fullDescription: 'The bot will attempt to leave its current voice channel'
 });
 
 bot.registerCommand('queue', (msg, args) => {
