@@ -44,10 +44,12 @@ clean.registerSubcommand('you', (msg, args) => {
     let toDelete = parseInt(args.length > 0 ? args[0] : 10);
     if(!toDelete) return 'Please supply a valid number';
 
-    bot.deleteMessage(msg.channel.id, msg.id);
-
-    bot.purgeChannel(msg.channel.id, toDelete, (logMsg) => {
+    bot.purgeChannel(msg.channel.id, toDelete + 1, (logMsg) => {
         if(logMsg.author.id === bot.user.id) return true;
+    }).then(del => {
+        bot.createMessage(msg.channel.id, `${del} messages deleted`).then(msg => {
+            setTimeout(bot.deleteMessage(msg), 4000);
+        });
     });
 }, {
     description: 'Delete bot\'s messages',
@@ -61,6 +63,10 @@ clean.registerSubcommand('me', (msg, args) => {
 
     bot.purgeChannel(msg.channel.id, toDelete + 1, (logMsg) => {
         if(logMsg.author.id === msg.author.id) return true;
+    }).then(del => {
+        bot.createMessage(msg.channel.id, `${del} messages deleted`).then(msg => {
+            setTimeout(bot.deleteMessage(msg), 4000);
+        });
     });
 }, {
     description: 'Deletes your messages',
@@ -77,10 +83,12 @@ clean.registerSubcommand('them', (msg, args) => {
     let toDelete = parseInt(args.length > 1 ? args[1] : 10);
     if(!toDelete) return 'Please supply a valid number';
 
-    bot.deleteMessage(msg.channel.id, msg.id);
-
-    bot.purgeChannel(msg.channel.id, toDelete, (logMsg) => {
+    bot.purgeChannel(msg.channel.id, toDelete + 1, (logMsg) => {
         if(logMsg.author.id === toFind.id) return true;
+    }).then(del => {
+        bot.createMessage(msg.channel.id, `${del} messages deleted`).then(msg => {
+            setTimeout(bot.deleteMessage(msg), 4000);
+        });
     });
 }, {
     description: 'Deletes messages by a single user',
