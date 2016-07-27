@@ -8,7 +8,7 @@ let players = {};
 bot.registerCommand('join', (msg, args) => {
     let server = msg.member.guild.id;
 
-    if(!msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
+    if(!msg.member.voiceState || !msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
     if(players[server] && players[server].playing) return 'I\'m playing something in a different voice channel';
 
     bot.joinVoiceChannel(msg.member.voiceState.channelID)
