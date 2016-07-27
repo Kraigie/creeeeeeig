@@ -28,7 +28,11 @@ let clean = bot.registerCommand('clean', (msg, args) => {
     let toDelete = parseInt(args.length > 0 ? args[0] : 10);
     if(!toDelete) return 'Please supply a valid number';
 
-    bot.purgeChannel(msg.channel.id, toDelete + 1);
+    bot.purgeChannel(msg.channel.id, toDelete + 1).then(del => {
+        bot.createMessage(msg.channel.id, `${del - 1} messages deleted`).then(msg => {
+            setTimeout(bot.deleteMessage(msg), 4000);
+        });
+    });
 }, {
     description: 'Deletes messages',
     fullDescription: 'The bot will delete messages from all users in the last specified number of messages',
@@ -47,7 +51,7 @@ clean.registerSubcommand('you', (msg, args) => {
     bot.purgeChannel(msg.channel.id, toDelete + 1, (logMsg) => {
         if(logMsg.author.id === bot.user.id) return true;
     }).then(del => {
-        bot.createMessage(msg.channel.id, `${del} messages deleted`).then(msg => {
+        bot.createMessage(msg.channel.id, `${del - 1} messages deleted`).then(msg => {
             setTimeout(bot.deleteMessage(msg), 4000);
         });
     });
@@ -64,7 +68,7 @@ clean.registerSubcommand('me', (msg, args) => {
     bot.purgeChannel(msg.channel.id, toDelete + 1, (logMsg) => {
         if(logMsg.author.id === msg.author.id) return true;
     }).then(del => {
-        bot.createMessage(msg.channel.id, `${del} messages deleted`).then(msg => {
+        bot.createMessage(msg.channel.id, `${del - 1} messages deleted`).then(msg => {
             setTimeout(bot.deleteMessage(msg), 4000);
         });
     });
@@ -86,7 +90,7 @@ clean.registerSubcommand('them', (msg, args) => {
     bot.purgeChannel(msg.channel.id, toDelete + 1, (logMsg) => {
         if(logMsg.author.id === toFind.id) return true;
     }).then(del => {
-        bot.createMessage(msg.channel.id, `${del} messages deleted`).then(msg => {
+        bot.createMessage(msg.channel.id, `${del - 1} messages deleted`).then(msg => {
             setTimeout(bot.deleteMessage(msg), 4000);
         });
     });
