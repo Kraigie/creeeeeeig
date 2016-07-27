@@ -30,7 +30,7 @@ let clean = bot.registerCommand('clean', (msg, args) => {
 
     bot.purgeChannel(msg.channel.id, toDelete + 1).then(del => {
         bot.createMessage(msg.channel.id, `${del - 1} messages deleted`).then(msg => {
-            setTimeout(bot.deleteMessage(msg), 4000);
+            setTimeout(() => bot.deleteMessage(msg.channel.id, msg.id), 4000);
         });
     });
 }, {
@@ -52,7 +52,7 @@ clean.registerSubcommand('you', (msg, args) => {
         if(logMsg.author.id === bot.user.id) return true;
     }).then(del => {
         bot.createMessage(msg.channel.id, `${del - 1} messages deleted`).then(msg => {
-            setTimeout(bot.deleteMessage(msg), 4000);
+            setTimeout(() => bot.deleteMessage(msg.channel.id, msg.id), 4000);
         });
     });
 }, {
@@ -69,7 +69,7 @@ clean.registerSubcommand('me', (msg, args) => {
         if(logMsg.author.id === msg.author.id) return true;
     }).then(del => {
         bot.createMessage(msg.channel.id, `${del - 1} messages deleted`).then(msg => {
-            setTimeout(bot.deleteMessage(msg), 4000);
+            setTimeout(() => bot.deleteMessage(msg.channel.id, msg.id), 4000);
         });
     });
 }, {
@@ -91,7 +91,7 @@ clean.registerSubcommand('them', (msg, args) => {
         if(logMsg.author.id === toFind.id) return true;
     }).then(del => {
         bot.createMessage(msg.channel.id, `${del - 1} messages deleted`).then(msg => {
-            setTimeout(bot.deleteMessage(msg), 4000);
+            setTimeout(() => bot.deleteMessage(msg.channel.id, msg.id), 4000);
         });
     });
 }, {

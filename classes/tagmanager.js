@@ -4,18 +4,19 @@ let config = require('../config.json');
 let Datastore = require('nedb');
 
 function createStore(serverId) {
-    return new Datastore({
+    let db = new Datastore({
         filename: `${config.db_store_location}/${serverId}/tags.db`,
         autoload: true,
         onload: (err) => {
             if(err) console.log(`Error in onLoad while creating db: ${err}`);
-            this.tags.ensureIndex({ fieldName: 'tag', unique: true }, err => {
+            db.ensureIndex({ fieldName: 'tag', unique: true }, err => {
                 if(err) {
                     console.log(`Error ensuring unique index: ${err}`);
                 }
             });
         }
     });
+    return db;
 }
 
 module.exports = class TagManager {
@@ -36,7 +37,7 @@ module.exports = class TagManager {
                     return resolve(`Tag \`${tag.tag}\` couldn't be found`);
                 }
 
-                this.tags.update(tag, {$inc: {views: 1}}, {}, (err) => {
+                tags.update(tag, {$inc: {views: 1}}, {}, (err) => {
                     if(err) {
                         console.log(`Error updating document view count: ${err}`);
                         return reject();

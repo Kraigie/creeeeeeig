@@ -3,11 +3,15 @@ const TagManager = require('../classes/tagmanager.js');
 let tags = new TagManager();
 
 bot.registerCommand('taglist', (msg, args) => {
-    tags.getAllTag(msg.member.server.id).then(content => {
+    tags.getAllTags(msg.member.guild.id).then(content => {
         bot.createMessage(msg.channel.id, content);
     }).catch(() => {
         bot.createMessage(msg.channel.id, 'There was an error retrieving the tags');
     });
+}, {
+    aliases: ['tags'],
+    description: 'Get all of the tags',
+    fullDescription: 'The bot will retrieve all of the sever\'s tags'
 });
 
 let tag = bot.registerCommand('tag', (msg, args) => {
@@ -15,7 +19,7 @@ let tag = bot.registerCommand('tag', (msg, args) => {
 
     tags.getTag({
         tag: args.join(' ')
-    }, msg.member.server.id).then(content => {
+    }, msg.member.guild.id).then(content => {
         bot.createMessage(msg.channel.id, content);
     }).catch(() => {
         bot.createMessage(msg.channel.id, 'There was an error retrieving your tag');
@@ -37,7 +41,7 @@ tag.registerSubcommand('create', (msg, args) => {
         views: 0
     };
 
-    tags.createTag(doc, msg.member.server.id).then(content => {
+    tags.createTag(doc, msg.member.guild.id).then(content => {
         bot.createMessage(msg.channel.id, content);
     }).catch(() => {
         bot.createMessage(msg.channel.id, 'There was an error creating your tag');
@@ -60,7 +64,7 @@ tag.registerSubcommand('edit', (msg, args) => {
         $set: {
             views: 0, time: msg.timestamp, content: args.join(' ')
         }
-    }, msg.member.server.id).then(content => {
+    }, msg.member.guild.id).then(content => {
         bot.createMessage(msg.channel.id, content);
     }).catch(() => {
         bot.createMessage(msg.channel.id, 'There was an error editing your tag');
@@ -77,7 +81,7 @@ tag.registerSubcommand('remove', (msg, args) => {
     tags.removeTag({
         tag:args.join(' '),
         creator:msg.author.id
-    }, msg.member.server.id).then(content => {
+    }, msg.member.guild.id).then(content => {
         bot.createMessage(msg.channel.id, content);
     }).catch(() => {
         bot.createMessage(msg.channel.id, 'There was an error removing your tag');

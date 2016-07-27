@@ -3,17 +3,20 @@ arr.push('hello');
 arr.push('world');
 
 bot.registerCommand('test', (msg, args) => {
-    bot.joinVoiceChannel(msg.member.voiceState.channelID)
-    .then(conn => {
-        conn.playFile('test.mp3');
-    });
+    return 'no';
+
+    //bot.joinVoiceChannel(msg.member.voiceState.channelID)
+    //.then(conn => {
+    //    conn.playFile('test.mp3');
+    //});
 }, {
     description: 'Test things',
     fullDescription: 'TEEEEESSSSSSSSSSTTTTTTTTTTTtt'
 });
 
 bot.registerCommand('test1', (msg, args) => {
-    arr.push(Math.random() * 100);
+    return 'absolutely not';
+    //arr.push(Math.random() * 100);
 }, {
     description: 'Test things1',
     fullDescription: 'TEEEEESSSSSSSSSSTTTTTTTTTTTtt1'
