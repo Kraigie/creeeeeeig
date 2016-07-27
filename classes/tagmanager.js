@@ -79,7 +79,7 @@ module.exports = class TagManager {
         });
     }
 
-    updateTag(old, toChange, serverId) {
+    editTag(old, toChange, serverId) {
         let tags = this.tags[serverId] = this.tags[serverId] || createStore(serverId);
         return new Promise((resolve, reject) => {
             tags.update(old, toChange, {}, (err, numAffected) => {
