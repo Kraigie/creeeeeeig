@@ -1,6 +1,5 @@
 const Permissions = require('eris').Constants.Permissions;
 
-//TODO: Get number of deleted somehow
 //TODO: Clean them / mute case sensitivity
 //TODO: Clean them / mute nicknames
 //TODO: Should userIDs override the rest of the permissions? I think so - ALL OF THIS NEEDS TO BE FIXED
