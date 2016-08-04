@@ -1,35 +1,33 @@
 'use strict;';
 
-const request = require('request');
+const axios = require('axios');
 const auth = require('../../auth');
 
 module.exports.getLink = function(link, query) {
     if(!query) return Promise.resolve(link);
 
     return new Promise((resolve, reject) => {
-        request({
-            uri: 'https://www.googleapis.com/youtube/v3/search',
-            qs: {
+        let options = {
+            url: '/youtube/v3/search',
+            baseURL: 'https://www.googleapis.com',
+            params: {
                 q: link,
                 part: 'snippet',
                 key: auth.yt_key,
                 maxResults: '1',
                 type: 'video'
             },
-            json: true
-        },
-        (err, response, body) => {
-            if(err) {
-                console.log(`Error geting YT song: ${err.stack}`);
-                reject(new Error(`Error getting YT song`));
+            responseType: 'json',
+            validateStatus: (status) => {
+                return status >= 200 && status < 300;
             }
+        };
 
-            if(response.statusCode !== 200 || !body) {
-                console.log(`Didn\t receive a 200 from youtube song query, or there was no body`);
-                reject(new Error(`Error getting YT song`));
-            }
-
-            return resolve(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`);
+        axios(options).then(resp => {
+            return resolve(`https://www.youtube.com/watch?v=${resp.data.items[0].id.videoId}`);
+        }).catch(err => {
+            console.log(`Error geting YT song: ${err.stack}`);
+            return reject(new Error(`Error getting YT song`));
         });
     });
 };

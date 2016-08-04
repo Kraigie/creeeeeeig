@@ -1,6 +1,6 @@
 const auth = require('../auth');
 const util = require('./meta/util');
-const request = require('request');
+const axios = require('axios');
 const ezArray = require('fixed-2d-array');
 
 bot.registerCommand('ping', (msg, args) => {
@@ -137,24 +137,20 @@ bot.registerCommand('weather', (msg, args) => {
     if(args.length === 0) return "Please specify a location";
 
     let options = {
-        uri: 'http://api.openweathermap.org/data/2.5/weather',
-        qs: {
+        url: '/data/2.5/weather',
+        baseURL: 'http://api.openweathermap.org',
+        params: {
             APPID: auth.weather_key,
             q: args.join()
         },
-        json: true
+        responseType: 'json',
+        validateStatus: (status) => {
+            return status >= 200 && status < 300;
+        }
     };
 
-    request(options, (err, resp, body) => {
-        if (err) {
-            console.log(`Error getting weathers: ${err}`);
-            return `${msg.author.mention}, your weather request could not be completed`;
-        }
-
-        if (body.cod !== 200 || !body.main)
-        return `${msg.author.mention}, your location could not be found`;
-
-        let temp = body.main.temp;
+    axios(options).then(resp => {
+        let temp = resp.data.main.temp;
         temp = (temp - 273.15) * 1.8000 + 32.00;
 
         let retStr = '';
@@ -162,9 +158,9 @@ bot.registerCommand('weather', (msg, args) => {
         else if (temp > 45) retStr += ':leaves:';
         else retStr += ':snowman:';
 
-        retStr += ` \`${body.name}\` | Temp: ${temp.toFixed(1)}°F `;
+        retStr += ` \`${resp.data.name}\` | Temp: ${temp.toFixed(1)}°F `;
 
-        for (let w of body.weather) {
+        for (let w of resp.data.weather) {
             if (w.main === 'Rain' || w.main === 'Drizzle') retStr += ':cloud_rain:';
             if (w.main === 'Thunderstorm') retStr += ':thunder_cloud_rain:';
             if (w.main === 'Clear') retStr += ':sunny:';
@@ -176,6 +172,9 @@ bot.registerCommand('weather', (msg, args) => {
         }
 
         bot.createMessage(msg.channel.id, retStr);
+    }).catch(err => {
+        console.log(`Error getting weather: ${err.stack}`);
+        bot.createMessage(msg.channel.id, `${msg.author.mention}, your location could not be found`);
     });
 }, {
     description: 'Get the weather',
