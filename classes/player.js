@@ -34,13 +34,13 @@ module.exports = class Player {
         let next = this.queue.shift();
 
         if(next) {
-            try {
-                this.conn.playStream(next.getStream());
+            next.getStream().then(stream => {
+                this.conn.playStream(stream);
                 bot.createMessage(this.chann.id, next.getPrettyInfo(true));
-            } catch (err) {
+            }).catch(err => {
                 console.log(`Error in playNext func: ${err}`);
                 bot.createMessage(this.chann.id, `There was an error playing your song`);
-            }
+            });
         }
     }
 

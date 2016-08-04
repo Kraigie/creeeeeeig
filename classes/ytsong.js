@@ -27,9 +27,15 @@ module.exports = class YtSong extends Song {
     }
 
     getStream() {
-        return ytdl(this.link, {filter: 'audioonly'}).on('error', err => {
-            console.log(`Error getting yt song stream: ${err}`);
-            throw err;
+        return new Promise((resolve, reject) => {
+            let stream = ytdl(this.link, {filter: 'audioonly'}).on('error', err => {
+                if(err) {
+                    return reject(err);
+                }
+                console.log(`Error getting yt song stream: ${err}`);
+                throw err;
+            });
+            return resolve(stream);
         });
     }
 };
