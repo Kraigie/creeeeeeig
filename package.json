@@ -17,11 +17,11 @@
   },
   "homepage": "https://github.com/Kraigie/CraigBotV2#readme",
   "dependencies": {
+    "axios": "^0.13.1",
     "eris": "github:abalabahaha/eris#dev",
     "fixed-2d-array": "^1.2.0",
     "nedb": "^1.8.0",
     "performance-now": "^0.2.0",
-    "request": "^2.72.0",
     "ytdl-core": "^0.7.16"
   }
 }

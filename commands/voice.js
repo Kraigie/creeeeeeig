@@ -31,7 +31,6 @@ bot.registerCommand('leave', (msg, args) => {
 
     bot.leaveVoiceChannel(players[server].channel);
     players[server] = null;
-
 }, {
     description: 'Make me leave my voice channel',
     fullDescription: 'The bot will attempt to leave its current voice channel'
