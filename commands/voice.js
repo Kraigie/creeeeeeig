@@ -130,7 +130,7 @@ bot.registerCommand('playlist', (msg, args) => {
     let playlist = type === 'sc' ? new ScPlaylist(args.join(' ')) : new YtPlaylist(args.join(' '));
 
     playlist.getList().then(songs => {
-        for(song of songs) {
+        for(let song of songs) {
             song.getInfo().then(song => {
                 players[server].addSong(song);
             })
