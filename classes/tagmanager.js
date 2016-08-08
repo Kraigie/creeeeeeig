@@ -1,7 +1,7 @@
 'use strict;';
 
-let config = require('../config.json');
-let Datastore = require('nedb');
+const config = require('../config.json');
+const Datastore = require('nedb');
 
 function createStore(serverId) {
     let db = new Datastore({
