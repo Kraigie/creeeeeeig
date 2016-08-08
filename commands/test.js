@@ -10,3 +10,35 @@ bot.registerCommand('testx', (msg, args) => {
         }
     }
 });
+
+bot.registerCommand('test', (msg, args) => {
+    bot.joinVoiceChannel(msg.member.voiceState.channelID)
+    .then(conn => {
+        conn.playFile('test.mp3');
+        conn.setVolume(.5);
+    });
+
+}, {
+    description: 'Test things',
+    fullDescription: 'TEEEEESSSSSSSSSSTTTTTTTTTTTtt'
+});
+
+bot.registerCommand('test2', (msg, args) => {
+    bot.joinVoiceChannel(msg.member.voiceState.channelID)
+    .then(conn => {
+        conn.playFile('test2.mp3');
+        conn.setVolume(.5);
+    });
+
+}, {
+    description: 'Test things',
+    fullDescription: 'TEEEEESSSSSSSSSSTTTTTTTTTTTtt'
+});
+
+
+
+
+
+
+
+
