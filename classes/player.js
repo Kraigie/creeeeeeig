@@ -20,14 +20,14 @@ module.exports = class Player {
         });
     }
 
-    addSong(song) {
+    addSong(song, print) {
         if(this.queue.length === 0 && !this.conn.playing) {
             this.queue.push(song);
             this.playNext();
         }
         else {
             this.queue.push(song);
-            bot.createMessage(this.chann.id, `Your song was added to the queue in position ${this.queue.length}`);
+            if(print) bot.createMessage(this.chann.id, `Your song was added to the queue in position ${this.queue.length}`);
         }
     }
 
