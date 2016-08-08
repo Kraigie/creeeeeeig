@@ -1,4 +1,5 @@
 {
     "evalid": "89918932789497856",
-    "db_store_location": "./data/"
+    "db_store_location": "./data/",
+    "voice_modifier": ".5"
 }

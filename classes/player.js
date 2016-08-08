@@ -1,4 +1,5 @@
 'use strict;';
+const config = require('../config.json');
 
 module.exports = class Player {
     constructor(conn, chann) {
@@ -35,13 +36,19 @@ module.exports = class Player {
 
         if(next) {
             next.getStream().then(stream => {
-                this.conn.playStream(stream);
+                this.conn.playStream(stream, {inlineVolume: true});
                 bot.createMessage(this.chann.id, next.getPrettyInfo(true));
             }).catch(err => {
                 console.log(`Error in playNext func: ${err}`);
                 bot.createMessage(this.chann.id, `There was an error playing your song`);
             });
         }
+    }
+
+    setVolume(volume) {
+        let vol = parseInt(volume);
+        vol = vol * parseFloat(config.voice_modifier) / 100;
+        this.conn.setVolume(vol);
     }
 
     skip() {

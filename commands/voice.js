@@ -5,6 +5,23 @@ const util = require('./meta/util');
 
 let players = {};
 
+bot.registerCommand('volume', (msg, args) => {
+    let server = msg.member.guild.id;
+
+    //TODO: Check to see if they're in the correct voice channel?
+    if(!msg.member.voiceState || !msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
+    if(!players[server]) return 'I\'m not in a voice channel';
+
+    if(args.length === 0) return 'Please supply a volume';
+
+    players[server].setVolume(args[0]);
+
+}, {
+    description: 'Change the volume of the bot',
+    fullDescription: 'The bot will change the it\'s volume',
+    usage: '<volume configured on a 0-100 scale>' //TODO: This could use some explanation
+});
+
 bot.registerCommand('join', (msg, args) => {
     let server = msg.member.guild.id;
 
