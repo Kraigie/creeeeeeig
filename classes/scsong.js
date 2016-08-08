@@ -27,12 +27,15 @@ module.exports = class ScSong extends Song {
             };
 
             axios(options).then(resp => {
+                if(!resp.data.streamable) {
+                    return reject(new Error('Soundcloud track is not streamable'));
+                }
+
                 this.title = resp.data.title;
                 this.streamUrl = resp.data.stream_url;
                 return resolve(this);
             }).catch(err => {
-                console.log(`Error getting soundcloud resolve: ${err}`);
-                return reject(new Error(err));
+                return reject(err);
             });
         });
     }
