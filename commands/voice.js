@@ -112,6 +112,39 @@ bot.registerCommand('play', (msg, args) => {
 
 }, {
     description: 'Make me play a song',
-    fullDescription: 'The bot will attempt to join your voice channel',
+    fullDescription: 'The bot will play a song from soundcloud or youtube',
     usage: '<youtube url> or <soundcloud url> or <youtube search>'
+});
+
+bot.registerCommand('playlist', (msg, args) => {
+    if(args.length === 0) return 'Please supply a playlist link';
+
+    let server = msg.member.guild.id;
+
+    if(!msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
+    if(!players[server]) return 'I\'m not in a voice channel';
+
+    let type = util.getSource(args.join(' '));
+    if(!type) return 'You didn\'t supply a valid playlist';
+
+    let playlist = type === 'sc' ? new ScPlaylist(args.join(' ')) : new YtPlaylist(args.join(' '));
+
+    playlist.getList().then(songs => {
+        for(song of songs) {
+            song.getInfo().then(song => {
+                players[server].addSong(song);
+            })
+            .catch(err => {
+                console.log(`Error getting song: ${err.stack}`);
+                bot.createMessage(msg.channel.id, 'There was an error adding your song to the queue');
+            });
+        }
+    }).catch(err => {
+        console.log(`Error getting playlist songs: ${err.stack}`);
+        bot.createMessage(msg.channel.id, `I wasn't able to retrieve your playlist`);
+    });
+}, {
+    description: 'Make me play a playlist',
+    fullDescription: 'The bot will attempt to play a playlist',
+    usage: '<youtube playlist link> or <soundcloud playlist link>'
 });

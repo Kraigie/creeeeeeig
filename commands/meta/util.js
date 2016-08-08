@@ -35,7 +35,7 @@ module.exports.getLink = function(link, query) {
 module.exports.getSource = function(song) {
     try {
         if(/s\w*c|y\w*t/.test(song)) {
-            if(/s\w*c/.test(song)) return 'sc';
+            if(/s\w*c/.test(song)) return 'sc'; //TODO: Check for links, so a . after c etc.
             if(/y\w*t/.test(song)) return 'yt';
         }
         else {
