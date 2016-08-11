@@ -118,7 +118,7 @@ bot.registerCommand('play', (msg, args) => {
     usage: '<youtube url> or <soundcloud url> or <youtube search>'
 });
 
-bot.registerCommand('playlist', (msg, args) => { //TODO: Tell how many songs were added to the queue
+bot.registerCommand('playlist', (msg, args) => { //TODO: Tell how many songs were added to the queue, list subcommand of play?
     if(args.length === 0) return 'Please supply a playlist link';
 
     let server = msg.member.guild.id;
@@ -127,11 +127,11 @@ bot.registerCommand('playlist', (msg, args) => { //TODO: Tell how many songs wer
     if(!players[server]) return 'I\'m not in a voice channel';
 
     let type = util.getSource(args.join(' '));
-    if(!type) return 'You didn\'t supply a valid playlist';
+    if(!type || type === 'query') return 'You didn\'t supply a valid playlist';
 
     let playlist = type === 'sc' ? new ScPlaylist(args.join(' '), msg.member.nick || msg.member.user.username, 'sc') : new YtPlaylist(args.join(' '), msg.member.nick || msg.member.user.username, 'yt');
 
-    playlist.getList().then(songs => {
+    playlist.getSongs().then(songs => {
         for(let song of songs) {
             song.getInfo().then(song => {
                 players[server].addSong(song);
