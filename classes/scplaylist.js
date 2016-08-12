@@ -4,11 +4,13 @@ const auth = require('../auth.json');
 const ScSong = require('./scsong');
 
 module.exports = class ScPlayList extends Playlist {
-    constructor(link, requester, type) {
-        super(link, requester, type);
+
+    constructor(requester, type) {
+        super(requester, type);
     }
 
-    getSongs() {
+    getSongs(link) {
+        this.link = link;
         return new Promise((resolve, reject) => {
             let options = {
                 url: '/resolve',

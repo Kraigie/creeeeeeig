@@ -129,9 +129,9 @@ bot.registerCommand('playlist', (msg, args) => { //TODO: Tell how many songs wer
     let type = util.getSource(args.join(' '));
     if(!type || type === 'query') return 'You didn\'t supply a valid playlist';
 
-    let playlist = type === 'sc' ? new ScPlaylist(args.join(' '), msg.member.nick || msg.member.user.username, 'sc') : new YtPlaylist(args.join(' '), msg.member.nick || msg.member.user.username, 'yt');
+    let playlist = type === 'sc' ? new ScPlaylist(msg.member.nick || msg.member.user.username, 'sc') : new YtPlaylist(msg.member.nick || msg.member.user.username, 'yt');
 
-    playlist.getSongs().then(songs => {
+    playlist.getSongs(args.join(' ')).then(songs => {
         for(let song of songs) {
             song.getInfo().then(song => {
                 players[server].addSong(song);

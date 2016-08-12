@@ -5,17 +5,24 @@ const YtSong = require('./ytsong');
 
 module.exports = class YtPlayList extends Playlist {
 
-    constructor(link, requester, type) {
-        super(link, requester, type);
+    constructor(requester, type) {
+        super(requester, type);
     }
 
-    getSongs() {
+    getSongs(link) {
+        this.link = link;
+        try{
+            let regex = /list=([\d\w]+)/;
+            this.playlistId = this.link.match(regex)[1];
+        } catch(err) {
+            return Promise.reject(err);
+        }
         return new Promise((resolve, reject) => {
             let options = {
-                url: '/resolve',
-                baseURL: 'https://api.soundcloud.com',
+                url: '/youtube/v3/playlistItems',
+                baseURL: 'https://www.googleapis.com',
                 params: {
-                    url: this.link,
+                    url: this.playlistID,
                     client_id: auth.sc_key
                 },
                 responseType: 'json',
