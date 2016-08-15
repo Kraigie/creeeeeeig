@@ -132,16 +132,26 @@ bot.registerCommand('playlist', (msg, args) => { //TODO: Tell how many songs wer
 
     let playlist = type === 'sc' ? new ScPlaylist(msg.member.nick || msg.member.user.username, 'sc') : new YtPlaylist(msg.member.nick || msg.member.user.username, 'yt');
 
+    let getAndAdd = (songs) => {
+        console.log('called getAndAdd');
+        let song = songs.shift();
+
+        if(!song) return;
+
+        song.getInfo().then(song => {
+            players[server].addSong(song, false);
+
+            setTimeout(getAndAdd, 500, songs);
+        })
+        .catch(err => {
+            console.log(`Error getting song: ${err.stack}`);
+            bot.createMessage(msg.channel.id, 'There was an error adding your song to the queue');
+            getAndAdd(songs);
+        });
+    };
+
     playlist.getSongs(args.join(' ')).then(songs => {
-        for(let song of songs) {
-            song.getInfo().then(song => {
-                players[server].addSong(song, false);
-            })
-            .catch(err => {
-                console.log(`Error getting song: ${err.stack}`);
-                bot.createMessage(msg.channel.id, 'There was an error adding your song to the queue');
-            });
-        }
+        getAndAdd(songs);
     }).catch(err => {
         console.log(`Error getting playlist songs: ${err.stack}`);
         bot.createMessage(msg.channel.id, `I wasn't able to retrieve your playlist`);
