@@ -32,6 +32,8 @@ module.exports = class Player {
     }
 
     playNext() {
+        if(!this.queue) return;
+
         let next = this.queue.shift();
 
         if(next) {
@@ -43,6 +45,11 @@ module.exports = class Player {
                 bot.createMessage(this.chann.id, `There was an error playing your song`);
             });
         }
+    }
+
+    kill() {
+        this.queue = null;
+        bot.leaveVoiceChannel(this.chann.id);
     }
 
     setVolume(volume) {

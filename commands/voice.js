@@ -48,7 +48,7 @@ bot.registerCommand('leave', (msg, args) => {
 
     if(!players[server]) return 'I\'m not in a voice channel';
 
-    bot.leaveVoiceChannel(players[server].channel);
+    players[server].kill();
     players[server] = null;
 }, {
     description: 'Make me leave my voice channel',
@@ -133,11 +133,10 @@ bot.registerCommand('playlist', (msg, args) => { //TODO: Tell how many songs wer
     let playlist = type === 'sc' ? new ScPlaylist(msg.member.nick || msg.member.user.username, 'sc') : new YtPlaylist(msg.member.nick || msg.member.user.username, 'yt');
 
     let getAndAdd = (songs) => {
-        console.log('called getAndAdd');
         let song = songs.shift();
 
         if(!song) return;
-
+        
         song.getInfo().then(song => {
             players[server].addSong(song, false);
 
