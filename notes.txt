@@ -20,37 +20,3 @@ Fortunes: get fortunes - http://www.yerkee.com/api/fortune/
 CommandUsage: stats on command usage, searches with yts, would need to store commands
 Played: keep track of people playing games - record in db
 Clearall: as the name implies
-
------ DB -----
-Perms DB Schema:
-  {
-    perm: 'clean_roles'
-    roles: [list of role strings]
-  }
-  {
-    perm: 'volume_roles'
-    roles: [list of role strings]
-  }
-  {
-    perm: 'nickname_roles'
-    roles: [list of role strings]
-  }
-
-Tags DB Schema:
-  {
-    creator : <>,
-    time: <>,
-    tag: <>,
-    content: <>,
-    views: <>
-  }
-  {
-    creator : <>,
-    time: <>,
-    tag: <>,
-    content: <>,
-    views: <>
-  }
-  {
-    however many more tags
-  }
