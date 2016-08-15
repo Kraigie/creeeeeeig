@@ -22,8 +22,10 @@ module.exports = class YtPlayList extends Playlist {
                 url: '/youtube/v3/playlistItems',
                 baseURL: 'https://www.googleapis.com',
                 params: {
-                    url: this.playlistID,
-                    client_id: auth.sc_key
+                    key: auth.yt_key,
+                    part: 'contentDetails',
+                    playlistId: this.playlistId,
+                    maxResults: 10
                 },
                 responseType: 'json',
                 validateStatus: (status) => {
@@ -33,8 +35,8 @@ module.exports = class YtPlayList extends Playlist {
             };
 
             axios(options).then(resp => {
-                let tracks = resp.data.tracks;
-                tracks = tracks.filter(track => track.streamable).map(track => new YtSong(track.uri, this.requester, this.type));
+                let tracks = resp.data.items;
+                tracks = tracks.map(item => new YtSong(`https://www.youtube.com/watch?v=${item.contentDetails.videoId}`, this.requester, this.type));
                 return resolve(tracks);
             }).catch(err => {
                 return reject(err);

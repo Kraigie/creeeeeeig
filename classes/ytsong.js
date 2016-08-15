@@ -12,7 +12,6 @@ module.exports = class YtSong extends Song {
         return new Promise((resolve, reject) => {
             ytdl.getInfo(this.link, (err, info) => {
                 if(err) {
-                    console.log(`Error getting yt song info: ${err}`);
                     return reject(err);
                 }
 

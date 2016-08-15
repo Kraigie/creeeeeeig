@@ -72,9 +72,10 @@ bot.registerCommand('skip', (msg, args) => {
 
     if(!msg.member.voiceState.channelID) return 'You\'re not in a voice channel';
     if(!players[server]) return 'I\'m not in a voice channel';
-
-    players[server].skip();
-    return 'Song was skipped';
+    if(players[server].playing) {
+        players[server].skip();
+        return 'Song was skipped';
+    }
 }, {
     description: 'Skip the current song',
     fullDescription: 'Skips to the next song or stops playing if the queue is empty'
@@ -100,7 +101,7 @@ bot.registerCommand('play', (msg, args) => {
         }
 
         song.getInfo().then(song => {
-            players[server].addSong(song);
+            players[server].addSong(song, true);
         })
         .catch(err => {
             console.log(`Error getting song: ${err.stack}`);
@@ -134,7 +135,7 @@ bot.registerCommand('playlist', (msg, args) => { //TODO: Tell how many songs wer
     playlist.getSongs(args.join(' ')).then(songs => {
         for(let song of songs) {
             song.getInfo().then(song => {
-                players[server].addSong(song);
+                players[server].addSong(song, false);
             })
             .catch(err => {
                 console.log(`Error getting song: ${err.stack}`);

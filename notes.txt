@@ -1,0 +1,56 @@
+
+----- IDEAS -----
+Db of command permissions - would update on the fly, but reload from db on restart
+PM Handling: handle pms, likely just ignore them all together - set Serveronly property on commands
+Command cooldowns: time between commands - per user?
+Reload Commands: way to reload them (new builder?)
+Clearing: tell how many messages are cleared
+Games & Points: accumulate points while online, bet them
+
+----- COMMANDS -----
+SetNickName/SetPlaying: Let user set bot playing/nickname is he has proper permissions
+RandomNick: Set user to have a random nickname - https://randomuser.me/api/
+Stats: most messages by channel, server, whatever - total users and servers bot can see
+FuzzyTags: fuzzy search on tags
+Info: info on bot
+GSeatch: Search google, return first result
+MayMays: From MAL get names, info, etc http://myanimelist.net/modules.php?go=api
+8Ball: self explanitory
+Fortunes: get fortunes - http://www.yerkee.com/api/fortune/
+CommandUsage: stats on command usage, searches with yts, would need to store commands
+Played: keep track of people playing games - record in db
+Clearall: as the name implies
+
+----- DB -----
+Perms DB Schema:
+  {
+    perm: 'clean_roles'
+    roles: [list of role strings]
+  }
+  {
+    perm: 'volume_roles'
+    roles: [list of role strings]
+  }
+  {
+    perm: 'nickname_roles'
+    roles: [list of role strings]
+  }
+
+Tags DB Schema:
+  {
+    creator : <>,
+    time: <>,
+    tag: <>,
+    content: <>,
+    views: <>
+  }
+  {
+    creator : <>,
+    time: <>,
+    tag: <>,
+    content: <>,
+    views: <>
+  }
+  {
+    however many more tags
+  }
