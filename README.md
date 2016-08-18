@@ -7,7 +7,7 @@ Discord bot built using [eris](https://github.com/abalabahaha/eris)
   * You'll likely get some errors. If you don't want voice functionality, ignore them.
   * If you're on linux, install whatever it asks you to.
   * If you're on windows, start praying to the build gods. Try running `npm install --global --production windows-build-tools` and google whatever other problems you run into.
-  * If you **_really_** can't figure it out, come bother people [here](https://discord.gg/9UZwzNK)
+  * If you **_really_** can't figure it out, and are okay with being yelled at and belittled, come bother people [here](https://discord.gg/9UZwzNK)
 3. Create an `auth.json` file as described below
 4. Run `node bot.js`
 
