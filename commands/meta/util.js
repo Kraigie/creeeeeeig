@@ -1,53 +1,5 @@
 'use strict;';
 
-const axios = require('axios');
-const auth = require('../../auth');
-
-module.exports.getLink = function(link, query) {
-    if(!query) return Promise.resolve(link);
-
-    return new Promise((resolve, reject) => {
-        let options = {
-            url: '/youtube/v3/search',
-            baseURL: 'https://www.googleapis.com',
-            params: {
-                q: link,
-                part: 'snippet',
-                key: auth.yt_key,
-                maxResults: '1',
-                type: 'video'
-            },
-            responseType: 'json',
-            validateStatus: (status) => {
-                return status >= 200 && status < 300;
-            }
-        };
-
-        axios(options).then(resp => {
-            return resolve(`https://www.youtube.com/watch?v=${resp.data.items[0].id.videoId}`);
-        }).catch(err => {
-            console.log(`Error geting YT song: ${err.stack}`);
-            return reject(new Error(`Error getting YT song`));
-        });
-    });
-};
-
-module.exports.getSource = function(song) {
-    try {
-        if(/s\w*c\w*\.|y\w*t\w*\./.test(song)) {
-            if(/s\w*c\w*\./.test(song)) return 'sc';
-            if(/y\w*t\w*\./.test(song)) return 'yt';
-        }
-        else {
-            if(/http/.test(song)) return;
-            return 'query';
-        }
-    } catch(err) {
-        console.log(`Error with regex in getSource function: ${err}`);
-        return;
-    }
-};
-
 module.exports.strToMs = function(time) {
     let num = 0;
     try {
